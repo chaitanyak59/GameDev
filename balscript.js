@@ -15,6 +15,8 @@ var highScore = localStorage.getItem('highScore') || 0,score = sessionStorage.ge
 var magic_row = Math.floor(Math.random() * brickRowCount);
 var magic_column = Math.floor(Math.random() * brickColumnCount);
 img1 = new Image,ball = new Image, shadow = new Image, shading = new Image;
+var audio = new Audio(), playlist = new Array('sounds/metalbreak.wav', 'sounds/paddle.wav','sounds/loselife.wav');
+//Initializing bricks with default values
 for (c = 0; c < brickColumnCount; ++c) {
     bricks[c] = [];
     for (r = 0; r < brickRowCount; ++r) {
@@ -34,17 +36,28 @@ function changePos(){//Main Caller which calls all the functions
     a += da;
     brickFrames();//Used to redraw and collision detection
     gameStats();//Lives+Scores
-     if(wid+dw<ballRadius||wid+dw>canvass.width-ballRadius){dw=-dw;a += da;}//a variable is used for rotating in OPP direction
+     if(wid+dw<ballRadius||wid+dw>canvass.width-ballRadius){
+        dw=-dw;a += da;//a variable is used for rotating in OPP direction
+      }
      if(hei+dh<ballRadius) {dh=-dh;a += da;}//Top 
       else if(hei+dh>canvass.height-ballRadius-paddleHeight) {
-          if(wid>paddleX&wid<paddleX+paddleWidth) {dh=-dh;a += da;}
+          if(wid>paddleX&wid<paddleX+paddleWidth) {
+              dh=-dh;a += da;
+              audio.loop = false;
+              audio.src = playlist[0];//Ball Hits paddle Audio
+              audio.play();}
           else{
                lives--;
                wid=canvass.width/2;
                hei=canvass.height-30;
                paddleX=(canvass.width-paddleWidth)/2;
                dw=hh=-5;
-           if(lives==0){gameover.style.display='block';finalscore.innerHTML+='  '+score;finalscore.style.display='block'; stop();}}} 
+               if(lives==0){
+                   audio.loop = false;
+                   audio.src = playlist[2];//lose Life Audio
+                   audio.play();
+                   gameover.style.display='block';finalscore.innerHTML+='  '+score;finalscore.style.display='block'; stop();
+      }}} 
     if(rightKey&&paddleX<canvass.width-paddleWidth) paddleX+=7;
     if(leftKey&&paddleX>0) paddleX-=7;
     if (score> highScore) {
@@ -86,7 +99,7 @@ function start(){
      gl.closePath();
   }
 function drawPaddle() {
-    img1.src = 'paddle.jpg';
+    img1.src = 'paddle.png';
     gl.beginPath();
      gl.drawImage(img1,paddleX,canvass.height-paddleHeight,paddleWidth,paddleHeight);
     gl.closePath();
@@ -149,6 +162,9 @@ function brickFrames() {
                         score = 0;
                         document.location.reload();
                     }
+                    audio.loop = false;
+                    audio.src = playlist[1];//Ball Hits brick
+                    audio.play();
                 }
             }
         }
@@ -157,9 +173,9 @@ function gameStats(){
     var gradient=gl.createLinearGradient(0,0,canvass.width,0);
    gl.beginPath(); 
     gl.font='19px Comic Sans MS';
-    gradient.addColorStop("0","black");
-    gradient.addColorStop("0.5","magenta");
-    gradient.addColorStop("1.0","red");
+    gradient.addColorStop("0","white");
+    gradient.addColorStop("0.5","orange");
+    gradient.addColorStop("1.0","white");
     gl.fillStyle=gradient;
     gl.fillText('Score:'+score,420,15);
     gl.fillText('Lives:'+lives,canvass.width-500,15);

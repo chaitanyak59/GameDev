@@ -1,18 +1,20 @@
 var canvass = document.getElementById('canvas_g');
 var gl = canvass.getContext('2d');
-
 var pause_status=document.getElementById('pause_status');
 var highscore_button=document.getElementById('button');
 var wid=canvass.width/2;
-var hei=canvass.height-30;
-var dw=5,dh=-5,ballRadius=10;
-var paddleHeight=15,paddleWidth=100,paddleX=(canvass.width-paddleWidth)/2;
+var hei=canvass.height-30,a = 0,bw = 30/2,bh = 30/2;//Setting  hardcoded width and height
+var dw=5,dh=-5,ballRadius=15;
+var deg2rad = Math.PI / 180;
+var da = 10 * deg2rad;
+var paddleHeight=20,paddleWidth=130,paddleX=(canvass.width-paddleWidth)/2;
 var rightKey=false,leftKey=false;
 var brickRowCount=8, brickColumnCount=9, brickWidth=50, brickHeight=20, brickPadding=1, brickOffsetTop=30, brickOffsetLeft=30, bricks=[];
 var score=0,lives=3;
 var highScore = localStorage.getItem('highScore') || 0;
 var magic_row = Math.floor(Math.random() * brickRowCount);
 var magic_column = Math.floor(Math.random() * brickColumnCount);
+img1 = new Image,ball = new Image, shadow = new Image, shading = new Image;
 for (c = 0; c < brickColumnCount; ++c) {
     bricks[c] = [];
     for (r = 0; r < brickRowCount; ++r) {
@@ -29,18 +31,19 @@ function changePos(){
     gl.clearRect(0,0,canvass.width,canvass.height)
     wid+=dw;
     hei+=dh;
+    a += da;
     collisionBricks();
     gameStats();
-     if(wid+dw<ballRadius||wid+dw>canvass.width-ballRadius) dw=-dw;
-     if(hei+dh<ballRadius) dh=-dh;//Top 
+     if(wid+dw<ballRadius||wid+dw>canvass.width-ballRadius){dw=-dw;a += da;}//a variable is used for rotating in OPP direction
+     if(hei+dh<ballRadius) {dh=-dh;a += da;}//Top 
       else if(hei+dh>canvass.height-ballRadius-paddleHeight) {
-          if(wid>paddleX&wid<paddleX+paddleWidth) dh=-dh;
+          if(wid>paddleX&wid<paddleX+paddleWidth) {dh=-dh;a += da;}
           else{
                lives--;
                wid=canvass.width/2;
                hei=canvass.height-30;
                paddleX=(canvass.width-paddleWidth)/2;
-               dw=hh=-4;
+               dw=hh=-5;
            if(lives==0){ stop();}}} 
     if(rightKey&&paddleX<canvass.width-paddleWidth) paddleX+=7;
     if(leftKey&&paddleX>0) paddleX-=7;
@@ -69,56 +72,52 @@ function start(){
     stopGame = true;}
   }
   function drawBall(){     
-    gl.beginPath();
+    /*gl.beginPath();
          gl.arc(wid,hei,10,0,Math.PI*2);
          gl.fillStyle='red';
          gl.fill();   
+     gl.closePath();*/
+     ball.src    = 'beachball_color.png';
+     shadow.src  = 'beachball_shadow.png';
+     shading.src = 'beachball_shading.png';
+     gl.beginPath();
+      gl.translate(wid,hei);
+      gl.drawImage( shadow, -bw+5, -bh+5);
+      gl.rotate(a);
+      gl.drawImage( ball, -bw, -bh,30,30);//Setting  hardcoded width and height
+      gl.rotate(-a);                      // The shading shouldn't be rotated
+      gl.drawImage( shading, -bw, -bh,30,30);//Setting  hardcoded width and height
+      gl.translate(-wid,-hei);
+      
      gl.closePath();
   }
 function drawPaddle() {
-    img1 = new Image();
     img1.src = 'paddle.jpg';
     gl.beginPath();
      gl.drawImage(img1,paddleX,canvass.height-paddleHeight,paddleWidth,paddleHeight);
     gl.closePath();
-    }
-function drawBricks(){
-    for(c=0;c<brickColumnCount;++c){
-      for(r=0;r<brickRowCount;++r){
-         if(bricks[c][r].status==1){
-            var brickX = (c*(brickWidth+brickPadding))+brickOffsetLeft;
-            var brickY = (r*(brickHeight+brickPadding))+brickOffsetTop;
-              bricks[c][r].x = brickX;
-              bricks[c][r].y = brickY;
-             gl.beginPath(); 
-              if (magic_column == c && magic_row == r) gl.fillStyle = "yellow"; 
-              else if (c % 2 != 0) gl.fillStyle = "#FF0000";
-              else gl.fillStyle = "#C2AA83";
-              gl.fillRect(brickX, brickY, brickWidth, brickHeight);
-             gl.closePath();
-         }
-      }
-  }
-  };
+    }   
 function collisionBricks() {
     for (c = 0; c < brickColumnCount; c++)
         for (r = 0; r < brickRowCount; r++) {
             var b = bricks[c][r];
             if (b.status == 1) {
-                  brickX = (c*(brickWidth+brickPadding))+brickOffsetLeft;
-                  brickY = (r*(brickHeight+brickPadding))+brickOffsetTop;
-                  bricks[c][r].x = brickX;
-                  bricks[c][r].y = brickY;
-                 gl.beginPath(); 
-                  if (magic_column == c && magic_row == r) gl.fillStyle = "yellow"; 
-                  else if (c % 2 != 0) gl.fillStyle = "#FF0000";
-                  else gl.fillStyle = "#C2AA83";
-                  gl.fillRect(brickX, brickY, brickWidth, brickHeight);
-                 gl.closePath();
+                brickX = (c*(brickWidth+brickPadding))+brickOffsetLeft;
+                brickY = (r*(brickHeight+brickPadding))+brickOffsetTop;
+                bricks[c][r].x = brickX;
+                bricks[c][r].y = brickY;
+               //DRAWING BRICKS******** 
+               gl.beginPath(); 
+                if (magic_column == c && magic_row == r) gl.fillStyle = "yellow"; 
+                else if (c % 2 != 0) gl.fillStyle = "#FF0000";
+                else gl.fillStyle = "#C2AA83";
+                gl.fillRect(brickX, brickY, brickWidth, brickHeight);
+               gl.closePath();
+               //DRAWING BRICKS ENDS****
                 if (wid > b.x && wid < b.x + brickWidth && hei > b.y && hei < b.y + brickHeight) {
                     if (c == magic_column && r == magic_row) {
                         console.log('magic');
-                        dh = -dh;
+                        dh = -dh;a += da;
                         if (typeof bricks[magic_column][magic_row] !== 'undefined') {
                             console.log('Magic broke');
                             bricks[magic_column][magic_row].status = 0;
@@ -146,7 +145,7 @@ function collisionBricks() {
                         }
                     } else {
                         console.log('normal');
-                        dh = -dh;
+                        dh = -dh;a += da;
                         b.status = 0;
                         score++;
                     }

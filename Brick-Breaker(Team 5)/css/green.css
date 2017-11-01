@@ -1,0 +1,41 @@
+#home {
+	background-image: url('../img/brick-wall.jpg');
+}	
+.btn {
+	background-color: #61F771;
+	border: 1px solid #61F771;
+	color: #262721;	
+}
+.btn:hover,
+.btn:active,
+.btn:focus {
+	background-color: #4CD259;
+	border: 1px solid #4CD259;
+	color: #262721;	
+}	
+.myform .form-control:focus,
+.myform textarea.inputError:focus,
+.input-group .form-control:focus {
+	border: 2px solid #61F771;
+}
+.videos img {
+  width:100%;
+  height:auto;
+}
+a.video {
+  float: left;
+  position: relative;
+}
+a.video span {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  background: url("../img/play-button.png") no-repeat;
+  background-position: 50% 50%;
+  background-size: 40%;
+}
+@media screen and (max-width: 480px) {
+  a.video span {
+    background-size: 400%;
+  }
+}

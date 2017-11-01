@@ -1,0 +1,134 @@
+*{
+    top: 0;left: 0;right: 0;bottom: 0;
+    margin: 0 auto;
+}
+#canvas_g {
+    position: absolute;
+    margin-top: 10px;
+    border-radius: 14px;
+    border-bottom: 45px ridge maroon;
+    box-shadow: 0px 0px 3px firebrick;
+    padding-top: 15px;
+    z-index: -1;
+    background: url('background.jpg');
+    background-size: 100% 100%;
+    top: 0;
+    bottom: 0;
+}
+#img {
+    position: absolute;
+    padding: 0.5px;
+    width: 47px;
+    height: 44.5px;
+    z-index: 1;
+    top: 524px;
+    left: 0px;
+    right: 465px;
+    bottom: 0;
+}
+#img2 {
+    position: absolute;
+    padding: 0.5px;
+    width: 74px;
+    height: 45.5px;
+    z-index: 1;
+    top: 524px;
+    left: 474px;
+}
+#pause_status{
+    position: absolute;
+    z-index: 1;
+    left: -5px;
+    width: 59px;
+    top: 260px;
+  
+}
+#button {
+  background-color: gray;
+  border: none;
+  color: white;
+  padding: 6px 25px;
+  text-align: center;
+  font-size: 16px;
+  font-family: cursive;
+  border-radius: 12px;
+  box-shadow: 0 5px #999;
+  margin-left: 412px;
+  margin-top: 527px;
+  cursor: -webkit-grabbing;
+  display: inline-block;
+   
+}
+
+  #game_over{
+    position: absolute;
+    z-index: 2;
+    width: 520px;
+    height: 517px;
+    top: 8px;
+    border-top-left-radius: 16px;
+    border-top-right-radius: 13px;
+    display:none;
+  }
+  #final_score{
+    top: 215px;
+    position: absolute;
+    z-index: 2;
+    background-color: yellow;
+    display: none;
+    left: 10px;
+    font-family: fantasy;
+    font-size: 36px;
+    border-radius: 12px;
+    padding: 15px;
+    width: 236px;
+    height: 44px;
+  }
+  #next_level {
+    position: absolute;
+    z-index: 2;
+    display: none;
+    left: 602px;
+    top: 277px;
+    height: 51px;
+    bottom: 334px;
+    background: #3498db;
+    background-image: -webkit-linear-gradient(top, #3498db, #2980b9);
+    background-image: -moz-linear-gradient(top, #3498db, #2980b9);
+    background-image: -ms-linear-gradient(top, #3498db, #2980b9);
+    background-image: -o-linear-gradient(top, #3498db, #2980b9);
+    background-image: linear-gradient(to bottom, #3498db, #2980b9);
+    -webkit-border-radius: 19;
+    -moz-border-radius: 19;
+    border-radius: 15px 140px 140px 5px;
+    -webkit-box-shadow: 0px 1px 3px #666666;
+    -moz-box-shadow: 0px 1px 3px #666666;
+    box-shadow: 0px 1px 3px #666666;
+    font-family: cursive;
+    color: #ffffff;
+    font-size: 20px;
+    padding: 10px 20px 10px 20px;
+    border: solid #1f628d 2px;
+    text-decoration: none;
+  }
+  
+  #next_level:hover {
+    background: #3cb0fd;
+    background-image: -webkit-linear-gradient(top, #3cb0fd, #3498db);
+    background-image: -moz-linear-gradient(top, #3cb0fd, #3498db);
+    background-image: -ms-linear-gradient(top, #3cb0fd, #3498db);
+    background-image: -o-linear-gradient(top, #3cb0fd, #3498db);
+    background-image: linear-gradient(to bottom, #3cb0fd, #3498db);
+    text-decoration: none;
+  }
+  #userName{
+    top: -463px;
+    margin: 481px;
+    color: white;
+    position: absolute;
+    left: 146px;
+    font-family: 'Raleway', sans-serif;
+    font-size: 16px;
+    font-weight: bolder;
+  
+}

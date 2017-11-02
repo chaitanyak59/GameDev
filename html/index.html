@@ -49,7 +49,7 @@
    var da = 10 * deg2rad;
    var paddleHeight=20,paddleWidth=130,paddleX=(canvass.width-paddleWidth)/2;
    var rightKey=false,leftKey=false;
-   var brickRowCount=1, brickColumnCount=1, brickWidth=50, brickHeight=20, brickPadding=1, brickOffsetTop=30, brickOffsetLeft=30, bricks=[];
+   var brickRowCount=9, brickColumnCount=9, brickWidth=50, brickHeight=20, brickPadding=1, brickOffsetTop=30, brickOffsetLeft=30, bricks=[];
    var lives=3,gameover=document.getElementById('game_over'),finalscore=document.getElementById('final_score');
    var highScore = localStorage.getItem('highScore') || 0,score=0,level=1,gamescore=0,count_2=0;
    var userName=localStorage.getItem('userName')||'Guest';

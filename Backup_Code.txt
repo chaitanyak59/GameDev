@@ -1,8 +1,26 @@
 <!doctype html>
 <html>
  <head>
-       <link rel="stylesheet" href="game_styles/style_1.css" /></head>
- <body>
+       <link rel="stylesheet" href="game_styles/style_1.css" />
+	   		<link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
+					<link href="https://fonts.googleapis.com/css?family=Orbitron" rel="stylesheet">
+</head>
+ <body style="background-image: url('game_images/brick-wall.jpg');">
+ <div class="left-area" style="float:left;">
+ <br />
+ <br />
+ <br />
+ <div style="font-size: 30px; font-family: 'Raleway', sans-serif; color:rgba(255,87,34,1);text-decoration:underline;text-align: center;" id="Instructions">Instructions to Play</div>
+ <div style="font-size: 18px; font-family: 'Raleway', sans-serif; color:rgb(255, 255,255);width: 380px;"><ul>
+  <br />
+	<li>Use paddle to bounce ball back at the blocks</li>
+	<li>You can use either arrow keys or mouse to do this.</li>
+	<li>Hit SPACE to launch ball or to Pause/Play.</li>
+	<li>Mouse cursor must be inside playing field to steer the paddle.</li>
+	<li>Every block broken out gives you 1 point.</li>
+</ul>
+</div>
+ </div>
  <canvas id="canvas_g" width=520 height=500>
  </canvas>
  <img src='game_images/res.png'id='img' onclick='restart()' />
@@ -10,6 +28,9 @@
  <div id='final_score' >Final Score :</div>
  <button id="next_level" onclick="next_level()">Next Level<span>&nbsp;&#x276d;&#x276d;&#x2771;</span></button>
  <p id='userName'>Welcome </p>
+ <div style="font-size: 50px; font-family: 'Raleway', sans-serif; color:rgba(255,87,34,1);text-align: center; float:right;padding-right:100px;padding-top:65px" id="Instructions">High Score
+ <div style="font-size: 70px; font-family: 'Orbitron', sans-serif; color:rgba(76,175,80 ,1);text-decoration:none;padding-top:30px" id='highScoreValue'></div>
+</div>
  <button id='button'></button>
  <img id='pause_status' />
  
@@ -20,6 +41,7 @@
    var gl = canvass.getContext('2d');
    var pause_status=document.getElementById('pause_status');
    var highscore_button=document.getElementById('button');
+   var highscore_text=document.getElementById('highScoreValue');
    var wid=canvass.width/2;
    var hei=canvass.height-30,a = 0,bw = 28/2,bh =28/2;//Setting  hardcoded width and height
    var dw=5,dh=-5,ballRadius=15;
@@ -27,13 +49,13 @@
    var da = 10 * deg2rad;
    var paddleHeight=20,paddleWidth=130,paddleX=(canvass.width-paddleWidth)/2;
    var rightKey=false,leftKey=false;
-   var brickRowCount=3, brickColumnCount=5, brickWidth=50, brickHeight=20, brickPadding=1, brickOffsetTop=30, brickOffsetLeft=30, bricks=[];
+   var brickRowCount=2, brickColumnCount=9, brickWidth=50, brickHeight=20, brickPadding=1, brickOffsetTop=30, brickOffsetLeft=30, bricks=[];
    var lives=3,gameover=document.getElementById('game_over'),finalscore=document.getElementById('final_score');
    var highScore = localStorage.getItem('highScore') || 0,score=0,level=1,gamescore=0,count_2=0;
    var userName=localStorage.getItem('userName')||'Guest';
    var magic_row = Math.floor(Math.random() * brickRowCount);
    var magic_column = Math.floor(Math.random() * brickColumnCount);
-   img1 = new Image,ball = new Image, shadow = new Image, shading = new Image,level=1;
+   img1 = new Image,ball = new Image, shadow = new Image, shading = new Image;
 var audio = new Audio(), playlist = new Array('sounds/metalbreak.wav', 'sounds/paddle.wav','sounds/loselife.wav','won.wav');
  document.getElementById('userName').innerHTML+=userName+'!';
 //Initializing bricks with default values
@@ -94,7 +116,7 @@ function changePos(){//Main Caller which calls all the functions
     if (score> highScore) {
         highScore = parseInt(score);
         localStorage.setItem('highScore', highScore);
-     } highscore_button.innerHTML='High Score:'+highScore;
+     }  highscore_text.innerHTML=highScore;
        drawBall();
        drawPaddle(); 
     }
@@ -219,7 +241,7 @@ function brickCollisions1() {
                     brickY = (r * (brickHeight + brickPadding)) + brickOffsetTop;
                     bricks[c][r].x = brickX;
                     bricks[c][r].y = brickY;
-                    if (wid > b.x && wid < b.x + brickWidth && hei > b.y && hei < b.y + brickHeight) {
+                    if (wid>b.x-ballRadius&& wid< b.x + brickWidth && hei > b.y-ballRadius && hei < b.y + brickHeight) {
                         if (c == magic_column && r == magic_row) {
                             console.log('magic');
                             dh = -dh;
@@ -281,7 +303,7 @@ function brickCollisions2()
                         brickY = (r * (brickHeight + brickPadding)) + brickOffsetTop;
                         bricks[c][r].x = brickX;
                         bricks[c][r].y = brickY;
-                        if (wid > b.x && wid < b.x + brickWidth && hei > b.y && hei < b.y + brickHeight) {
+                        if (wid>b.x-ballRadius&& wid< b.x + brickWidth && hei > b.y-ballRadius && hei < b.y + brickHeight) {
                             if (c == magic_column && r == magic_row) {
                                 console.log('magic');
                                 dh = -dh;
@@ -337,6 +359,7 @@ function brickCollisions2()
     }  
 function gameStats(){
     var gradient=gl.createLinearGradient(0,0,canvass.width,0);
+    highscore_button.innerHTML='LEVEL: '+level;
    gl.beginPath(); 
     gl.font='19px Comic Sans MS';
     gradient.addColorStop("0","white");
@@ -390,9 +413,9 @@ document.addEventListener("keyup",function(e){
 });
 var clearTime;
 document.addEventListener("keypress",function(e){
-    if(e.keyCode==32&&lives>0||level==2){   
+    if(e.keyCode==32&&lives>0&&document.getElementById('next_level').style.display!='block'){   
        if(stopGame==false) {
-          clearTimeout(clearTime);
+          clearTimeout(clearTime); 
           pause_status.src='game_images/pause.jpg';
           pause_status.style.opacity=1;
           stop(); 
@@ -424,7 +447,7 @@ function level_2_cordinates(){
             magic_row = Math.floor(Math.random() * brickRowCount);
             magic_column = Math.floor(Math.random() * brickColumnCount);
             paddleHeight = 20, paddleWidth = 130, paddleX = (canvass.width - paddleWidth) / 2;
-            dh = dw = -7;
+            dh =-6.5; dw = 6.5;
             gameover.src = 'game_images/won.png';
             gameover.style.display = 'block';
             document.getElementById('next_level').style.display = 'block';

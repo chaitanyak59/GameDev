@@ -31,4 +31,5 @@ jobs:
           name: Install project dependencies
           command: php composer.phar install
      # run tests!
-      - run: phpunit
+       - run: ./vendor/bin/codecept build
+       - run: ./vendor/bin/codecept run

@@ -6,7 +6,7 @@ jobs:
       - image: php:7.1-apache
         environment:
           APP_ENV: test
-    working_directory: ~/repo
+    working_directory: ~/GameDev
     steps:
       - run:
           name: Install system packages

@@ -30,5 +30,4 @@ jobs:
       - run:
           name: Install project dependencies
           command: php composer.phar install
-     # run tests!
-       - run: phpunit
+      - run: phpunit
